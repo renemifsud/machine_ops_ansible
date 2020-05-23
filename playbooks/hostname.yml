@@ -1,0 +1,12 @@
+- name: Get Hostname
+  become: yes
+  hosts: all
+  environment:
+    http_proxy: "{{ http_proxy_server if (http_proxy_server is defined) else omit }}"
+    https_proxy: "{{ http_proxy_server if (http_proxy_server is defined) else omit }}"
+    no_proxy: "{{ '127.0.0.1,localhost' if (http_proxy_server is defined) else omit }}"
+  tasks:
+    - name: Deploy Schemas to Schema Registry
+      include_role:
+        name: ad_hoc
+        tasks_from: hostname.yml

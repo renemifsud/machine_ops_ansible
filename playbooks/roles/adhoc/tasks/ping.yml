@@ -1,3 +1,7 @@
 ---
 - name: ping
   ping:
+  register: pinged
+
+- name: Print if pinged
+  debug: var=pinged

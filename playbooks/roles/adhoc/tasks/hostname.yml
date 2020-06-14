@@ -1,3 +1,0 @@
----
-- name: Get Hostname
-  command: hostname

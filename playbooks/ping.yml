@@ -1,23 +1,11 @@
-- name: Target Down
-  hosts: "{{ targets }}"
-  gather_facts: no
+- name: Ping host
+  hosts: all
   environment:
     http_proxy: "{{ http_proxy_server if (http_proxy_server is defined) else omit }}"
     https_proxy: "{{ http_proxy_server if (http_proxy_server is defined) else omit }}"
     no_proxy: "{{ '127.0.0.1,localhost' if (http_proxy_server is defined) else omit }}"
   tasks:
-    - name: Ping host
+    - name: Ping
       include_role:
         name: adhoc
         tasks_from: ping.yml
-      ignore_errors: yes
-
-    - name: print
-      debug:
-        msg: "{{ pingged }}"
-
-    - name: Switch on node_exporter
-      include_role:
-        name: adhoc
-        tasks_from: systemctl_on.yml
-      when: pingged.changed == True

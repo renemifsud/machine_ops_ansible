@@ -1,6 +1,7 @@
 ---
 - name: ping
-  ping: "{{ item }}"
+  net_ping:
+    dest: "{{ item }}"
   register: pingged
   with_items:
     - "{{ targets }}"

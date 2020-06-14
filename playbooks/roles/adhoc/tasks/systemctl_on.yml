@@ -1,5 +1,6 @@
 ---
 - name: Turn service on
+  become: yes
   systemd:
     name: node_exporter
     state: started

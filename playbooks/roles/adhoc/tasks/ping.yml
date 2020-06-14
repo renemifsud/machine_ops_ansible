@@ -4,7 +4,7 @@
   ignore_errors: yes
   command: "ping {{ item }}"
   with_list:
-    - target
+    - "{{target}}"
 
 - debug:
     msg: "{{ pinged }}"

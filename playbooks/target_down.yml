@@ -20,4 +20,4 @@
       include_role:
         name: adhoc
         tasks_from: systemctl_on.yml
-      when: pingged is succeeded
+      when: pingged.changed == True

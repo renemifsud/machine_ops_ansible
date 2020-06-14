@@ -12,6 +12,10 @@
       ignore_errors: yes
       register: pingged
 
+    - name: print
+      debug:
+        msg: "{{ pingged }}"
+
     - name: Switch on node_exporter
       include_role:
         name: adhoc

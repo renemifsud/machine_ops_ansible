@@ -5,8 +5,8 @@
       register: pinged
       failed_when: pinged.failed == True
   rescue:
-    - set_fact: var="FAILED"
+    - set_fact: pinged="FAILED"
   always:
     - debug:
-      var: result
+      var: pinged
       verbosity: 2

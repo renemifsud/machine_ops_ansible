@@ -7,5 +7,5 @@
   tasks:
     - name: Get the hostname
       include_role:
-        name: ping
-        tasks_from: ping.yml
+        name: adhoc
+        tasks_from: hostname.yml

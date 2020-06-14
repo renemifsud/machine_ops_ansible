@@ -9,10 +9,11 @@
       include_role:
         name: adhoc
         tasks_from: ping.yml
+      ignore_errors: yes
       register: pingged
 
     - name: Switch on node_exporter
       include_role:
         name: adhoc
         tasks_from: systemctl_on.yml
-      when: register is succeeded
+      when: pingged is succeeded

@@ -1,6 +1,5 @@
 ---
 - name: ping
-  ignore_errors: yes
   command: "ping -c 1 {{ item }}"
   with_items:
     - "{{ targets }}"

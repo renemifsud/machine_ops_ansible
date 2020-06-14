@@ -2,7 +2,7 @@ POST http://mo-awx.doxtechno.com/api/v2/job_templates/13/launch/ HTTP/1.1
 Content-Type: application/json
 Authorization: Basic admin:Gl88jZKaPr8AZpBc0daY
 
-{"extra_vars": {"targets": "mo-app03.doxtechno.com"}}
+{"extra_vars": {"targets": ["mo-app03.doxtechno.com","mo-app01.doxtechno.com"]}}
 
 
 ###

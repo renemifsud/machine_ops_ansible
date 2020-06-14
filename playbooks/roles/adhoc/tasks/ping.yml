@@ -1,7 +1,7 @@
 ---
 - name: ping
-  hosts: localhost
   command: "ping -c 1 {{ item }}"
+  delegate_to: localhost
   register: pingged
   with_items:
     - "{{ targets }}"

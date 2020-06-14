@@ -4,6 +4,3 @@
   command: "ping -c 1 {{ item }}"
   with_items:
     - "{{ targets }}"
-
-- debug:
-    msg: "{{ pinged }}"

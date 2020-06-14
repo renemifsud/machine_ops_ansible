@@ -1,0 +1,11 @@
+POST /api/v2/job_templates/13/launch/ HTTP/1.1
+Content-Type: application/json
+Authorization: Basic admin:Gl88jZKaPr8AZpBc0daY
+
+{"extra_vars": {"targets": "mo-app01.doxtechno.com"}}
+
+
+###
+GET http://mo-awx.doxtechno.com/api/v2/jobs/122/stdout/ HTTP/1.1
+Content-Type: application/json
+Authorization: Basic admin:Gl88jZKaPr8AZpBc0daY

@@ -10,4 +10,3 @@
       include_role:
         name: adhoc
         tasks_from: ping.yml
-        delegate_to: localhost

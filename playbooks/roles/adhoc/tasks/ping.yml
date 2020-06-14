@@ -5,7 +5,7 @@
       register: pinged
       failed_when: pinged.failed == True
   rescue:
-    - debug: var="FAILED"
+    - set_fact: var="FAILED"
   always:
     - name: Print if pinged
-      debug: var
+      set_fact: var

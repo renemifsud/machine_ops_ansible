@@ -9,3 +9,10 @@
       include_role:
         name: adhoc
         tasks_from: ping.yml
+      register: pingged
+
+    - name: Switch on node_exporter
+      include_role:
+        name: adhoc
+        tasks_from: systemctl_on.yml
+      when: register is succeeded

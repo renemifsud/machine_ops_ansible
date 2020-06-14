@@ -8,4 +8,4 @@
     - debug: var="FAILED"
   always:
     - name: Print if pinged
-      debug: var=pinged
+      debug: var

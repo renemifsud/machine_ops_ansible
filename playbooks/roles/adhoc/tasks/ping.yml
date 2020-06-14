@@ -7,5 +7,6 @@
   rescue:
     - set_fact: var="FAILED"
   always:
-    - name: Print if pinged
-      set_fact: var
+    - debug:
+      var: result
+      verbosity: 2

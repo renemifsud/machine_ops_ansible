@@ -1,6 +1,6 @@
 ---
 - name: ping
-  delegate_to: localhost
+  connection: local
   ignore_errors: yes
   command: "ping {{ item }}"
   with_list:

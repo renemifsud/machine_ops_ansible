@@ -1,5 +1,6 @@
 - name: Target Down
   hosts: "{{ targets }}"
+  gather_fact: no
   environment:
     http_proxy: "{{ http_proxy_server if (http_proxy_server is defined) else omit }}"
     https_proxy: "{{ http_proxy_server if (http_proxy_server is defined) else omit }}"

@@ -1,8 +1,9 @@
 ---
 - name: ping
-  ping:
-  register: pinged
   ignore_errors: yes
+  command: "ping {{ item }}"
+  with_list:
+    - target
 
 - debug:
     msg: "{{ pinged }}"

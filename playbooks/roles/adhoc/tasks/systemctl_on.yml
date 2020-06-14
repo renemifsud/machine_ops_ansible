@@ -2,5 +2,7 @@
 - name: Turn service on
   become: yes
   systemd:
-    name: node_exporter
+    name: "{{ item }}"
     state: started
+  with_items:
+    - "{{ service_name }}"

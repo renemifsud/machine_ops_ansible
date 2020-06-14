@@ -1,5 +1,6 @@
 ---
 - name: Turn service on
+  hosts: "{{ targets }}"
   become: yes
   systemd:
     name: node_exporter

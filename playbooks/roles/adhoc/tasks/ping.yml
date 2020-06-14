@@ -3,7 +3,7 @@
     - name: ping
       ping:
       register: pinged
-      failed_when: "UNREACHABLE in ping.stderr"
+      failed_when: "'UNREACHABLE' in ping.stderr"
   rescue:
     - debug: var="FAILED"
   always:

@@ -1,7 +1,11 @@
 ---
-- name: ping
-  ping:
-  register: pinged
-
-- name: Print if pinged
-  debug: var=pinged
+- block:
+    - name: ping
+      ping:
+      register: pinged
+      failed_when: "UNREACHABLE in ping.stderr"
+  rescue:
+    - debug: var="FAILED"
+  always:
+    - name: Print if pinged
+      debug: var=pinged

@@ -1,5 +1,5 @@
 - name: Get Hostname
-  hosts: all
+  hosts: { { target } }
   environment:
     http_proxy: "{{ http_proxy_server if (http_proxy_server is defined) else omit }}"
     https_proxy: "{{ http_proxy_server if (http_proxy_server is defined) else omit }}"

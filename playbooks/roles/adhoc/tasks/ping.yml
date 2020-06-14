@@ -1,12 +1,9 @@
 ---
-- block:
-    - name: ping
-      ping:
-      register: pinged
-      failed_when: pinged.failed == True
-  rescue:
-    - set_fact: pinged="FAILED"
-  always:
-    - debug:
-      var: pinged
-      verbosity: 2
+- name: ping
+  ping:
+  register: pinged
+  ignore_errors: yes
+
+- debug:
+  var: pinged
+  verbosity: 2

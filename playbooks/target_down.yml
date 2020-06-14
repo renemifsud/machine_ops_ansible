@@ -10,7 +10,6 @@
         name: adhoc
         tasks_from: ping.yml
       ignore_errors: yes
-      register: pingged
 
     - name: print
       debug:

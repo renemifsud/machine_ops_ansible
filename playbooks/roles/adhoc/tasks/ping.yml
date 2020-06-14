@@ -1,5 +1,6 @@
 ---
 - name: ping
   command: "ping -c 1 {{ item }}"
+  register: pingged
   with_items:
     - "{{ targets }}"

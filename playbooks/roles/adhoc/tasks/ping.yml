@@ -5,5 +5,4 @@
   ignore_errors: yes
 
 - debug:
-    var: pinged
-    verbosity: 2
+    msg: "{{ pinged }}"

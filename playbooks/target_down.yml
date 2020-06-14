@@ -1,0 +1,11 @@
+- name: Target Down
+  hosts: { { target } }
+  environment:
+    http_proxy: "{{ http_proxy_server if (http_proxy_server is defined) else omit }}"
+    https_proxy: "{{ http_proxy_server if (http_proxy_server is defined) else omit }}"
+    no_proxy: "{{ '127.0.0.1,localhost' if (http_proxy_server is defined) else omit }}"
+  tasks:
+    - name: Get the hostname
+      include_role:
+        name: adhoc
+        tasks_from: hostname.yml

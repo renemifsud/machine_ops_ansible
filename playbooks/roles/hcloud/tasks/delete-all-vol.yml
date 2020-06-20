@@ -1,0 +1,49 @@
+- name: Gather hcloud volume infos
+  hcloud_volume_info:
+    api_token: "{{ hetzner.api_key }}"
+  register: output
+  tags:
+    - delete
+
+- name: Recursively find /media fodlers with "vol"
+  find:
+    paths:
+      - /media/
+    file_type: directory
+  delegate_to: "{{ hetzner.target }}"
+  register: volume_mounts
+  tags:
+    - delete
+
+- set_fact:
+    volume_paths: "{{ volume_mounts.files | map(attribute='path') | list }}"
+  tags:
+    - delete
+
+- name: Unmount all volumes
+  mount:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ volume_paths }}"
+  tags:
+    - delete
+
+- name: Delete all volumes
+  hcloud_volume:
+    name: "{{ item.name }}"
+    server: "{{ hetzner.target }}"
+    state: absent
+    api_token: "{{ hetzner.api_key }}"
+  with_items:
+    - "{{ output.hcloud_volume_info }}"
+  register: volume
+  tags:
+    - delete
+# - name: Print the gathered infos
+#   debug:
+#     var: "{{ item.name }}"
+#   with_items:
+#     - "{{ output.hcloud_volume_info }}"
+#   tags:
+#     - delete

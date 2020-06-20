@@ -1,19 +1,23 @@
-[linux:children]
+[hcloud:children]
 applications
 rabbitmq
 data
 dc
+awx
 
 [dc]
-ipa-dc01.doxtechno.com
+ipa-dc01
 
 [applications]
-mo-app[01:03].doxtechno.com
+mo-app[01:03]
 
 [rabbitmq]
-mo-rab01.doxtechno.com
+mo-rab01
 
 [data]
-mo-smb01.doxtechno.com
+mo-smb01
+
+[awx]
+mo-awx
 
 

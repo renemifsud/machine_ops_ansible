@@ -1,0 +1,16 @@
+- name: Hcloud - Manage volumes
+  hosts: mo-awx
+  tasks:
+    - name: Create Volume
+      include_role:
+        name: hcloud
+        tasks_from: create-vol.yml
+      tags:
+        - create
+
+    - name: Delete Volume
+      include_role:
+        name: hcloud
+        tasks_from: delete-all-vol.yml
+      tags:
+        - delete

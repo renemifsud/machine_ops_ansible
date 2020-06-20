@@ -13,7 +13,7 @@
 - name: Create a volume
   hcloud_volume:
     name: "vol-{{ vol_num }}"
-    server: "{{ hetzner.target }}"
+    server: "{{ target }}"
     size: 10
     api_token: "{{ hetzner.api_key }}"
   register: volume
@@ -21,7 +21,7 @@
     - create
 
 - name: Create volume folder
-  delegate_to: "{{ hetzner.target }}"
+  delegate_to: "{{ target }}"
   become: yes
   file:
     path: /media/vol-{{ vol_num }}
@@ -33,7 +33,7 @@
     - create
 
 - name: Get filesystem_paths
-  delegate_to: "{{ hetzner.target }}"
+  delegate_to: "{{ target }}"
   shell:
     cmd: df /media/vol-{{ vol_num }} | awk '{print $1 }' | awk '{if(NR>1)print}'
   register: file_path
@@ -41,7 +41,7 @@
     - create
 
 - name: Mount and bind a volume
-  delegate_to: "{{ hetzner.target }}"
+  delegate_to: "{{ target }}"
   become: yes
   mount:
     path: /media/vol-{{ vol_num }}

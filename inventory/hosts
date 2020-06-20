@@ -1,4 +1,3 @@
----
 [hcloud:children]
 applications
 rabbitmq

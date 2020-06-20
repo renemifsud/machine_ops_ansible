@@ -21,6 +21,7 @@
     - delete
 
 - name: Unmount all volumes
+  delegate_to: "{{ target }}"
   mount:
     path: "{{ item }}"
     state: absent

@@ -40,12 +40,15 @@
   tags:
     - create
 
+- set_fact:
+    latest_drive: "{{ file_path.stdout.split("sda")[1] | int }}"
+
 - name: Mount and bind a volume
   delegate_to: "{{ target }}"
   become: yes
   mount:
     path: /media/vol-{{ vol_num }}
-    src: "{{ file_path.stdout }}"
+    src: "/dev/sda{{ latest_drive + 1 }}"
     fstype: ext4
     state: present
   tags:

@@ -55,6 +55,6 @@
     src: "/dev/{{ file_path.stdout }}"
     opts: bind
     fstype: ext4
-    state: present
+    state: mounted
   tags:
     - create

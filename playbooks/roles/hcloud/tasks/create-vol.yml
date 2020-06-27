@@ -53,6 +53,7 @@
   mount:
     path: /media/vol-{{ vol_num }}
     src: "/dev/{{ file_path.stdout }}"
+    opts: bind
     fstype: ext4
     state: present
   tags:

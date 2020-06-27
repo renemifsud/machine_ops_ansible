@@ -4,4 +4,4 @@
     dest: "{{ item }}"
   register: pingged
   with_items:
-    - "{{ targets }}"
+    - "{{ target }}"

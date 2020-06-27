@@ -1,11 +1,24 @@
 - name: PrometheusTargetMissing
-  hosts: "{{ target }}"
+  hosts: "{{ targets }}"
   environment:
     http_proxy: "{{ http_proxy_server if (http_proxy_server is defined) else omit }}"
     https_proxy: "{{ http_proxy_server if (http_proxy_server is defined) else omit }}"
     no_proxy: "{{ '127.0.0.1,localhost' if (http_proxy_server is defined) else omit }}"
   tasks:
-    - name: Turn on node_exporter
-      include_role:
-        name: adhoc
-        tasks_from: systemctl_on.yml
+    - name: Start node_exporter
+      become: yes
+      systemd:
+        name: "{{ item }}"
+        state: started
+      with_items:
+        - "{{ service_name }}"
+      tags:
+        - start-service
+
+    - name: Start machine
+      hcloud_server:
+        name: "{{ ansible_hostname }}"
+        state: started
+
+      tags:
+        - start-machine

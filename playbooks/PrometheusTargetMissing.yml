@@ -17,8 +17,8 @@
 
     - name: Start machine
       hcloud_server:
+        api_token: "{{ hetzner.api_key }}"
         name: "{{ ansible_hostname }}"
         state: started
-
       tags:
         - start-machine

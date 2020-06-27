@@ -18,6 +18,6 @@
     - name: Start machine
       include_role:
         name: hcloud
-        tasks_from: start-server.yml
+        tasks_from: start-machine.yml
       tags:
         - start-machine

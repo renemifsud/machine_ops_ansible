@@ -42,6 +42,11 @@
   tags:
     - create
 
+- name: Create a ext4 filesystem on the volume
+  filesystem:
+    fstype: ext4
+    dev: "/dev/{{ file_path.stdout }}"
+
 - name: Mount and bind a volume
   delegate_to: "{{ target }}"
   become: yes

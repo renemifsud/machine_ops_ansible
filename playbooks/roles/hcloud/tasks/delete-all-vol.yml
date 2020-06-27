@@ -6,6 +6,8 @@
     - delete
 
 - name: Recursively find /media fodlers with "vol"
+  delegate_to: "{{ target }}"
+  become: true
   find:
     paths:
       - /media/
@@ -22,6 +24,7 @@
 
 - name: Unmount all volumes
   delegate_to: "{{ target }}"
+  become: true
   mount:
     path: "{{ item }}"
     state: absent

@@ -5,54 +5,50 @@
   tags:
     - create
 
-- name: Print volumes
-  debug:
-    msg: "{{ output.hcloud_volume_info }}"
-  tags:
-    - create
-
-- set_fact:
+- name: "Getting the number of volumes existing in Hetzner"
+  set_fact:
     vol_num: "{{ output.hcloud_volume_info|length + 1 }}"
   tags:
     - create
-# - name: Create a volume
-#   hcloud_volume:
-#     name: "vol-{{ vol_num }}"
-#     server: "{{ target }}"
-#     size: "{{ hetzner.resize }}"
-#     api_token: "{{ hetzner.api_key }}"
-#   register: volume
-#   tags:
-#     - create
 
-# - name: Create volume folder
-#   delegate_to: "{{ target }}"
-#   become: yes
-#   file:
-#     path: /media/vol-{{ vol_num }}
-#     owner: admin
-#     group: admins
-#     mode: "0644"
-#     state: directory
-#   tags:
-#     - create
+- name: Create a volume
+  hcloud_volume:
+    name: "vol-{{ vol_num }}"
+    server: "{{ target }}"
+    size: "{{ hetzner.resize }}"
+    api_token: "{{ hetzner.api_key }}"
+  register: volume
+  tags:
+    - create
 
-# - name: Get filesystem_paths
-#   delegate_to: "{{ target }}"
-#   become: yes
-#   shell:
-#     cmd: lsblk | awk 'NR == 1 || $4 ~ "{{ hetzner.resize }}G"' | awk '{print $1}' | awk 'END{print}'
-#   register: file_path
-#   tags:
-#     - create
+- name: Create volume folder
+  delegate_to: "{{ target }}"
+  become: yes
+  file:
+    path: /media/vol-{{ vol_num }}
+    owner: admin
+    group: admins
+    mode: "0644"
+    state: directory
+  tags:
+    - create
 
-# - name: Mount and bind a volume
-#   delegate_to: "{{ target }}"
-#   become: yes
-#   mount:
-#     path: /media/vol-{{ vol_num }}
-#     src: "/dev/{{ file_path.stdout }}"
-#     fstype: ext4
-#     state: present
-#   tags:
-#     - create
+- name: Get filesystem_paths
+  delegate_to: "{{ target }}"
+  become: yes
+  shell:
+    cmd: lsblk | awk 'NR == 1 || $4 ~ "{{ hetzner.resize }}G"' | awk '{print $1}' | awk 'END{print}'
+  register: file_path
+  tags:
+    - create
+
+- name: Mount and bind a volume
+  delegate_to: "{{ target }}"
+  become: yes
+  mount:
+    path: /media/vol-{{ vol_num }}
+    src: "/dev/{{ file_path.stdout }}"
+    fstype: ext4
+    state: present
+  tags:
+    - create

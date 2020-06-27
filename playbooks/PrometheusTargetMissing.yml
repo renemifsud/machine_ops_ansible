@@ -16,10 +16,8 @@
         - start-service
 
     - name: Start machine
-      delegate_to: mo-awx
-      hcloud_server:
-        api_token: "{{ hetzner.api_key }}"
-        name: "{{ ansible_hostname }}"
-        state: started
+      include_role:
+        name: hcloud
+        tasks_from: start-server.yml
       tags:
         - start-machine

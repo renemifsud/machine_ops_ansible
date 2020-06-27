@@ -46,6 +46,8 @@
   filesystem:
     fstype: ext4
     dev: "/dev/{{ file_path.stdout }}"
+  tags:
+    - create
 
 - name: Mount and bind a volume
   delegate_to: "{{ target }}"

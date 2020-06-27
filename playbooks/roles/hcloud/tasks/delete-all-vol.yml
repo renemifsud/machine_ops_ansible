@@ -34,9 +34,9 @@
 
 - name: Delete all volumes
   hcloud_volume:
+    api_token: "{{ hetzner.api_key }}"
     name: "{{ item.name }}"
     state: absent
-    api_token: "{{ hetzner.api_key }}"
   with_items:
     - "{{ output.hcloud_volume_info }}"
   register: volume

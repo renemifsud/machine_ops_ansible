@@ -1,4 +1,4 @@
-- name: Hcloud - Manage volumes
+- name: HostOutOfDiskSpace
   hosts: mo-awx
   tasks:
     - name: Create Volume

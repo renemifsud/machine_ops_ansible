@@ -8,6 +8,8 @@
 - name: Print volumes
   debug:
     msg: "{{ output.hcloud_volume_info }}"
+  tags:
+    - create
 
 - set_fact:
     vol_num: "{{ output.hcloud_volume_info|length + 1 }}"

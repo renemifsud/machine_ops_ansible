@@ -12,7 +12,6 @@
     paths:
       - /media/
     file_type: directory
-  delegate_to: "{{ target }}"
   register: volume_mounts
   tags:
     - delete
@@ -36,7 +35,6 @@
 - name: Delete all volumes
   hcloud_volume:
     name: "{{ item.name }}"
-    server: "{{ target }}"
     state: absent
     api_token: "{{ hetzner.api_key }}"
   with_items:

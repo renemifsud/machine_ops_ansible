@@ -1,0 +1,16 @@
+- name: System
+  hosts: "{{ targets }}"
+  environment:
+    http_proxy: "{{ http_proxy_server if (http_proxy_server is defined) else omit }}"
+    https_proxy: "{{ http_proxy_server if (http_proxy_server is defined) else omit }}"
+    no_proxy: "{{ '127.0.0.1,localhost' if (http_proxy_server is defined) else omit }}"
+  tasks:
+    - name: Start node_exporter
+      become: yes
+      systemd:
+        name: "{{ item }}"
+        state: started
+      with_items:
+        - "{{ service_name }}"
+      tags:
+        - start-service

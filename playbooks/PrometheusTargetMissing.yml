@@ -16,6 +16,7 @@
         - start-service
 
     - name: Start machine
+      delegate: mo-awx
       hcloud_server:
         api_token: "{{ hetzner.api_key }}"
         name: "{{ ansible_hostname }}"

@@ -3,7 +3,7 @@
   delegate_to: mo-awx
   hcloud_server:
     api_token: "{{ hetzner.api_key }}"
-    name: "{{ targets }}"
+    name: "{{ target }}"
     state: restarted
   tags:
     - start-machine

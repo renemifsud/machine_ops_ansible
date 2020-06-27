@@ -4,6 +4,7 @@
   hcloud_server:
     api_token: "{{ hetzner.api_key }}"
     name: "{{ ansible_hostname }}"
+    server_type: cx11
     state: started
   tags:
     - start-machine

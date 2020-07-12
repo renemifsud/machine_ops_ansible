@@ -1,5 +1,5 @@
 ---
-- name: Check that rabbitmq_tools exists
+- name: Check if machine_ops exists
   stat:
     path: /etc/machine_ops
   register: repo_stat
@@ -8,7 +8,7 @@
   git:
     repo: "https://github.com/renemifsud/machine_ops_ansible.git"
     dest: /etc/machine_ops
-  when: not repo_stat.exists
+  when: not repo_stat.stat.exists
 
 - name: Update machine_ops repo
   git:

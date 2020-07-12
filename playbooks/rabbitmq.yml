@@ -18,19 +18,18 @@
       include_role:
         name: Consumer
         tasks_from: create-consumer.yml
-      tags:
-        - create-consumer
-
-    - name: Delete Publisher
-      include_role:
-        name: Publisher
-        tasks_from: delete-publisher.yml
-      tags:
-        - create-publisher
-
-    - name: Delete Consumer
-      include_role:
-        name: Consumer
-        tasks_from: create-consumer.yml
-      tags:
-        - create-consumer
+      apply:
+        tags:
+          - create-consumer
+    # - name: Delete Publisher
+    #   include_role:
+    #     name: Publisher
+    #     tasks_from: delete-publisher.yml
+    #   tags:
+    #     - create-publisher
+    # - name: Delete Consumer
+    #   include_role:
+    #     name: Consumer
+    #     tasks_from: create-consumer.yml
+    #   tags:
+    #     - create-consumer

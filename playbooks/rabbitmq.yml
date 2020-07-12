@@ -18,9 +18,9 @@
       include_role:
         name: Consumer
         tasks_from: create-consumer.yml
-      apply:
-        tags:
-          - create-consumer
+        apply:
+          tags:
+            - create-consumer
     # - name: Delete Publisher
     #   include_role:
     #     name: Publisher

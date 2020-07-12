@@ -10,9 +10,9 @@
       include_role:
         name: Publisher
         tasks_from: create-publisher.yml
-      apply:
-        tags:
-          - create-publisher
+        apply:
+          tags:
+            - create-publisher
 
     - name: Create Consumer
       include_role:

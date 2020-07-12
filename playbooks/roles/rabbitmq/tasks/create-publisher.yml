@@ -1,0 +1,62 @@
+---
+- name: Check that rabbitmq_tools exists
+  stat:
+    path: /etc/machine_ops
+  register: repo_stat
+
+- name: Download machine_ops repo
+  git:
+    repo: "https://github.com/renemifsud/machine_ops_ansible.git"
+    dest: /etc/machine_ops
+  when: not repo_stat.exists
+
+- name: Update machine_ops repo
+  git:
+    repo: "https://github.com/renemifsud/machine_ops_ansible.git"
+    dest: /etc/machine_ops
+    update: yes
+  when: repo_stat.exists
+
+- name: Check that rabbitmq_tools exists
+  stat:
+    path: /etc/rabbitmq_tools
+  register: rabbit_stat
+
+- block:
+    - name: Creating /etc/rabbitmq_tools
+      file:
+        path: /etc/rabbitmq_tools
+        state: directory
+        mode: "0755"
+
+    - name: Creating /etc/rabbitmq_tools/publishers
+      file:
+        path: /etc/rabbitmq_tools/publishers
+        state: directory
+        mode: "0755"
+
+    - name: Creating /etc/rabbitmq_tools/consumers
+      file:
+        path: /etc/rabbitmq_tools/consumers
+        state: directory
+        mode: "0755"
+  when: not rabbit_stat.exists
+
+- name: Get publishers deployed
+  find:
+    paths:
+      - /etc/rabbitmq_tools/publishers
+    recurse: no
+  register: publishers_installed
+
+- name: "Setting the number of the next publisher"
+  set_fact:
+    venv_path: "/etc/rabbitmq_tools/publishers/pub_{{ publishers_installed|length + 1 }}"
+  tags:
+    - create
+
+- name: Create venv for publisher
+  pip: requirement=/etc/machine_ops/infrastructure/requirements.txt virtualenv={{ venv_path }}
+
+- name: Start publisher
+  command: "source {{ venv }}/bin/activate && python /etc/machine_ops/infrastructure/master_publisher.py"

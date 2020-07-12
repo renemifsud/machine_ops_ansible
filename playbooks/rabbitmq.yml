@@ -13,6 +13,8 @@
         apply:
           tags:
             - create-publisher
+        tags:
+          - create-publisher
 
     - name: Create Consumer
       include_role:
@@ -21,6 +23,8 @@
         apply:
           tags:
             - create-consumer
+        tags:
+          - create-consumer
     # - name: Delete Publisher
     #   include_role:
     #     name: Publisher

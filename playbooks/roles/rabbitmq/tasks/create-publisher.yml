@@ -5,11 +5,10 @@
   register: repo_stat
 
 - name: Download machine_ops repo
-  # git:
-  #   repo: "{{ machine_ops_url }}"
-  #   dest: /etc/machine_ops
-  # command: "git clone {{ machine_ops_url }} /etc/machine_ops"
-  command: "wget https://www.python.org/ftp/python/3.7.4/Python-3.7.4.tgz"
+  git:
+    repo: "{{ machine_ops_url }}"
+    dest: /etc/machine_ops
+  validate_certs: no
   when: not repo_stat.stat.exists
 
 - name: Update machine_ops repo

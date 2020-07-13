@@ -8,7 +8,8 @@
   # git:
   #   repo: "{{ machine_ops_url }}"
   #   dest: /etc/machine_ops
-  command: "git clone {{ machine_ops_url }} /etc/machine_ops"
+  # command: "git clone {{ machine_ops_url }} /etc/machine_ops"
+  command: "ping google.com"
   when: not repo_stat.stat.exists
 
 - name: Update machine_ops repo

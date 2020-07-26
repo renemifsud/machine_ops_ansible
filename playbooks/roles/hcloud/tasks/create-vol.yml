@@ -26,7 +26,7 @@
   become: yes
   become_user: admin
   file:
-    path: /media/vol-{{ vol_num }}
+    path: /tmp/vol-{{ vol_num }}
     owner: admin
     group: admin
     mode: "0644"

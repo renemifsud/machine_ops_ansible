@@ -28,7 +28,7 @@
   file:
     path: /tmp/vol-{{ vol_num }}
     owner: admin
-    group: admin
+    group: admins
     mode: "0644"
     state: directory
   tags:

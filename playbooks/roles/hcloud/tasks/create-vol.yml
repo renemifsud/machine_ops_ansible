@@ -27,7 +27,7 @@
   file:
     path: /media/vol-{{ vol_num }}
     owner: admin
-    group: admins
+    group: admin
     mode: "0644"
     state: directory
   tags:

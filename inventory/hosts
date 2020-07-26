@@ -12,7 +12,7 @@ ipa-dc01
 mo-app[01:03]
 
 [rabbitmq]
-mo-rab01
+mo-rab01.doxtechno.com
 
 [data]
 mo-smb01

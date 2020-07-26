@@ -1,63 +1,94 @@
 ---
 - name: Check if machine_ops exists
   stat:
-    path: /etc/machine_ops
+    path: /usr/etc/machine_ops
   register: repo_stat
 
 - name: Download machine_ops repo
   git:
-    repo: "{{ machine_ops_url }}"
-    dest: /etc/machine_ops
-    accept_hostkey: yes
+    repo: "{{ git_repo }}"
+    dest: /usr/etc/machine_ops
   when: not repo_stat.stat.exists
 
 - name: Update machine_ops repo
   git:
-    repo: "{{ machine_ops_url }}"
-    dest: /etc/machine_ops
+    repo: "{{ git_repo }}"
+    dest: /usr/etc/machine_ops
     update: yes
-  when: repo_stat.exists
+  when: repo_stat.stat.exists
 
 - name: Check that rabbitmq_tools exists
   stat:
-    path: /etc/rabbitmq_tools
+    path: /usr/etc/rabbitmq_tools
   register: rabbit_stat
 
 - block:
-    - name: Creating /etc/rabbitmq_tools
+    - name: Creating /usr/etc/rabbitmq_tools
       file:
-        path: /etc/rabbitmq_tools
+        path: /usr/etc/rabbitmq_tools
         state: directory
         mode: "0755"
 
-    - name: Creating /etc/rabbitmq_tools/publishers
+    - name: Creating /usr/etc/rabbitmq_tools/publishers
       file:
-        path: /etc/rabbitmq_tools/publishers
+        path: /usr/etc/rabbitmq_tools/publishers
         state: directory
         mode: "0755"
 
-    - name: Creating /etc/rabbitmq_tools/consumers
+    - name: Creating /usr/etc/rabbitmq_tools/consumers
       file:
-        path: /etc/rabbitmq_tools/consumers
+        path: /usr/etc/rabbitmq_tools/consumers
         state: directory
         mode: "0755"
-  when: not rabbit_stat.exists
+  when: not rabbit_stat.stat.exists
 
 - name: Get publishers deployed
   find:
     paths:
-      - /etc/rabbitmq_tools/publishers
-    recurse: no
+      - /usr/etc/rabbitmq_tools/publishers/
+    contains: pub
+    file_type: directory
   register: publishers_installed
 
 - name: "Setting the number of the next publisher"
   set_fact:
-    venv_path: "/etc/rabbitmq_tools/publishers/pub_{{ publishers_installed|length + 1 }}"
-  tags:
-    - create
+    venv_path: "/usr/etc/rabbitmq_tools/publishers/pub_{{ publishers_installed.matched + 1 }}"
+
+- name: Check if virtualenv is installed
+  pip_package_info:
+    clients: ["pip3"]
+  register: pip3_packages
+
+- name: Check if virtualenv exists
+  stat:
+    path: "{{ venv_path }}"
+  register: venv
+
+- name: Install virtualenv via pip
+  pip:
+    name: virtualenv
+    executable: pip3
+  when: "'virtualenv' not in pip3_packages.packages.pip3"
 
 - name: Create venv for publisher
-  pip: requirement=/etc/machine_ops/infrastructure/requirements.txt virtualenv={{ venv_path }}
+  pip:
+    requirements: /usr/etc/machine_ops/infrastructure/requirements.txt
+    virtualenv: "{{ venv_path }}"
+  when: "not venv.stat.exists"
+
+- name: Get python interpreter
+  find:
+    paths:
+      - "{{ venv_path }}/bin/"
+    pattern: "python3*"
+    file_type: link
+  register: python_inter_list
+
+- name: "Setting python interpreter"
+  set_fact:
+    python_inter: "{{ python_inter_list.files | sort(attribute='path') | last }}"
 
 - name: Start publisher
-  command: "source {{ venv }}/bin/activate && python /etc/machine_ops/infrastructure/master_publisher.py"
+  command: "{{ python_inter.path }} /usr/etc/machine_ops/infrastructure/master_publisher.py {{ number_of_messages }} {{ queue_name }}"
+  async: 2592000
+  poll: 0

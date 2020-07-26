@@ -1,0 +1,107 @@
+---
+- name: Check if machine_ops exists
+  stat:
+    path: /usr/etc/machine_ops
+  register: repo_stat
+
+- name: "Setting the repo url"
+  set_fact:
+    git_repo: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      65326634653061616332636137373937346361383063343131616330353338333639346232333138
+      6130303739663565353766633437333434383865636666340a626134306530643535313765376133
+      34343262656538616663323961383063303732393565663263316362623236653537646265326232
+      6237306562323330360a363330633266363164353532613837313132623965336234353233353962
+      31346162313865666562323734643332373636363230653834646261353338366163313335633366
+      62386664633063336362373236643339613762633262353064623532343965373361353462306639
+      34626563366461643537323364393832633331663635326236313965396661393833643733393563
+      38613766393636373934
+
+- name: Download machine_ops repo
+  git:
+    repo: "{{ git_repo }}"
+    dest: /usr/etc/machine_ops
+  when: not repo_stat.stat.exists
+
+- name: Update machine_ops repo
+  git:
+    repo: "{{ git_repo }}"
+    dest: /usr/etc/machine_ops
+    update: yes
+  when: repo_stat.stat.exists
+
+- name: Check that rabbitmq_tools exists
+  stat:
+    path: /usr/etc/rabbitmq_tools
+  register: rabbit_stat
+
+- block:
+    - name: Creating /usr/etc/rabbitmq_tools
+      file:
+        path: /usr/etc/rabbitmq_tools
+        state: directory
+        mode: "0755"
+
+    - name: Creating /usr/etc/rabbitmq_tools/publishers
+      file:
+        path: /usr/etc/rabbitmq_tools/publishers
+        state: directory
+        mode: "0755"
+
+    - name: Creating /usr/etc/rabbitmq_tools/consumers
+      file:
+        path: /usr/etc/rabbitmq_tools/consumers
+        state: directory
+        mode: "0755"
+  when: not rabbit_stat.stat.exists
+
+- name: Get number of consumers deployed
+  find:
+    paths:
+      - /usr/etc/rabbitmq_tools/consumers/
+    contains: pub
+    file_type: directory
+  register: consumers_installed
+
+- name: "Setting the number of the next consumer"
+  set_fact:
+    venv_path: "/usr/etc/rabbitmq_tools/consumers/cons_{{ consumers_installed.matched + 1 }}"
+
+- name: Check if virtualenv is installed
+  pip_package_info:
+    clients: ["pip3"]
+  register: pip3_packages
+
+- name: Check if virtualenv exists
+  stat:
+    path: "{{ venv_path }}"
+  register: venv
+
+- name: Install virtualenv via pip
+  pip:
+    name: virtualenv
+    executable: pip3
+  when: "'virtualenv' not in pip3_packages.packages.pip3"
+
+- name: Create venv for consumer
+  pip:
+    requirements: /usr/etc/machine_ops/infrastructure/requirements.txt
+    virtualenv: "{{ venv_path }}"
+  when: "not venv.stat.exists"
+
+- name: Get python interpreter
+  find:
+    paths:
+      - "{{ venv_path }}/bin/"
+    pattern: "python3*"
+    file_type: link
+  register: python_inter_list
+
+- name: "Setting python interpreter"
+  set_fact:
+    python_inter: "{{ python_inter_list.files | sort(attribute='path') | last }}"
+
+- name: Start consumer
+  command: "{{ python_inter.path }} /usr/etc/machine_ops/infrastructure/consumer.py {{ queue_name }}"
+  async: 2592000
+  poll: 0

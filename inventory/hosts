@@ -6,18 +6,18 @@ dc
 awx
 
 [dc]
-ipa-dc01
+ipa-dc01.doxtechno.com
 
 [applications]
-mo-app[01:03]
+mo-app[01:03].doxtechno.com
 
 [rabbitmq]
 mo-rab01.doxtechno.com
 
 [data]
-mo-smb01
+mo-smb01.doxtechno.com
 
 [awx]
-mo-awx
+mo-awx.doxtechno.com
 
 

@@ -6,8 +6,9 @@
     https_proxy: "{{ http_proxy_server if (http_proxy_server is defined) else omit }}"
     no_proxy: "{{ '127.0.0.1,localhost' if (http_proxy_server is defined) else omit }}"
   tasks:
-    - name: Start node_exporter
+    - name: Start service
       become: yes
+      become_user: admin
       systemd:
         name: "{{ item }}"
         state: started
@@ -16,8 +17,9 @@
       tags:
         - start-service
 
-    - name: Start node_exporter
+    - name: Stop service
       become: yes
+      become_user: admin
       command: "systemctl stop {{ service_name }}"
       tags:
         - stop-service

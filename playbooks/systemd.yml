@@ -8,7 +8,6 @@
   tasks:
     - name: Start service
       become: yes
-      become_user: admin
       systemd:
         name: "{{ item }}"
         state: started
@@ -17,7 +16,12 @@
       tags:
         - start-service
 
-    - name: Stop service
-      command: "sudo systemctl stop {{ service_name }}"
+    - name: Start service
+      become: yes
+      systemd:
+        name: "{{ item }}"
+        state: started
+      with_items:
+        - "{{ service_name }}"
       tags:
         - stop-service

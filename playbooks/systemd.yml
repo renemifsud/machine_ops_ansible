@@ -17,8 +17,6 @@
         - start-service
 
     - name: Stop service
-      become: true
-      become_method: sudo
       systemd:
         name: "{{ item }}"
         state: stopped

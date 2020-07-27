@@ -17,7 +17,7 @@
         - start-service
 
     - name: Stop service
-      become: yes
+      become_user: node_exporter
       systemd:
         name: "{{ item }}"
         state: stopped

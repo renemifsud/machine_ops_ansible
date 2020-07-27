@@ -18,10 +18,6 @@
 
     - name: Start node_exporter
       become: yes
-      systemd:
-        name: "{{ item }}"
-        state: stopped
-      with_items:
-        - "{{ service_name }}"
+      command: "systemctl stop {{ service_name }}"
       tags:
         - stop-service

@@ -18,8 +18,6 @@
         - start-service
 
     - name: Stop service
-      become: yes
-      become_user: admin
-      command: "systemctl stop {{ service_name }}"
+      command: "sudo systemctl stop {{ service_name }}"
       tags:
         - stop-service

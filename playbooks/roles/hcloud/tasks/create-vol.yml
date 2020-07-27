@@ -24,7 +24,6 @@
 - name: Create volume folder
   delegate_to: "{{ target }}"
   become: yes
-  become_user: admin
   file:
     path: /tmp/vol-{{ vol_num }}
     owner: admin
@@ -37,7 +36,6 @@
 - name: Get filesystem_paths
   delegate_to: "{{ target }}"
   become: yes
-  become_user: admin
   shell:
     cmd: lsblk | awk 'NR == 1 || $4 ~ "{{ hetzner.resize }}G"' | awk '{print $1}' | awk 'END{print}'
   register: file_path

@@ -6,7 +6,7 @@ dc
 awx
 
 [dc]
-ipa-dc01.doxtechno.com
+ipa-dc01.doxtechno.com 
 
 [applications]
 mo-app[01:03].doxtechno.com

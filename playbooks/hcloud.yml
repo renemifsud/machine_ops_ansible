@@ -1,5 +1,5 @@
 - name: HostOutOfDiskSpace
-  hosts: mo-awx
+  hosts: mo-awx.doxtechno.com
   tasks:
     - name: Create Volume
       include_role:

@@ -16,7 +16,7 @@
       tags:
         - start-service
 
-    - name: Start service
+    - name: Stop service
       become: yes
       systemd:
         name: "{{ item }}"

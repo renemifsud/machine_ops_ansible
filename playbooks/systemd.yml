@@ -20,7 +20,7 @@
       become: yes
       systemd:
         name: "{{ item }}"
-        state: started
+        state: stopped
       with_items:
         - "{{ service_name }}"
       tags:
